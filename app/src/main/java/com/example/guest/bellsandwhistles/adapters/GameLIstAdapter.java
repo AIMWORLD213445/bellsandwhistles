@@ -58,8 +58,7 @@ public class GameListAdapter extends RecyclerView.Adapter<GameListAdapter.ItemVi
     }
 
 
-    public static class ItemViewHolder extends RecyclerView.ViewHolder
-
+    public class ItemViewHolder extends RecyclerView.ViewHolder
     {
         @Bind(R.id.Type) TextView mName;
         private Context mContext;
@@ -68,7 +67,7 @@ public class GameListAdapter extends RecyclerView.Adapter<GameListAdapter.ItemVi
             return mContext;
         }
 
-        public ItemViewHolder(View itemView) {
+        public ItemViewHolder(final View itemView) {
             super(itemView);
             ButterKnife.bind(this, itemView);
             mContext = itemView.getContext();
@@ -78,10 +77,14 @@ public class GameListAdapter extends RecyclerView.Adapter<GameListAdapter.ItemVi
                 }
 
                 public void onSwipeRight() {
+                    itemView.animate().translationX(100.0f);
+//                    removeAt(getAdapterPosition());
                     Toast.makeText(mContext, "right", Toast.LENGTH_SHORT).show();
                 }
 
                 public void onSwipeLeft() {
+                    itemView.animate().translationX(-100.0f);
+//                    removeAt(getAdapterPosition());
                     Toast.makeText(mContext, "left", Toast.LENGTH_SHORT).show();
                 }
 
@@ -90,6 +93,8 @@ public class GameListAdapter extends RecyclerView.Adapter<GameListAdapter.ItemVi
                 }
 
                 public void onClick(){
+                    itemView.animate().alpha(0.0f);
+                    removeAt(getAdapterPosition());
                     Toast.makeText(mContext, "clicked", Toast.LENGTH_SHORT).show();
                 }
 
@@ -108,5 +113,11 @@ public class GameListAdapter extends RecyclerView.Adapter<GameListAdapter.ItemVi
 
         }
 
+    }
+
+    public void removeAt(int position) {
+        mTypes.remove(position);
+        notifyItemRemoved(position);
+        notifyItemRangeChanged(position, mTypes.size());
     }
 }
